@@ -8,38 +8,20 @@ import {
 import React, { useEffect } from "react";
 
 const FadeInView = () => {
-  const progress = useAnimatedValue(0.5);
+  const progress = useAnimatedValue(0);
   const scale = useAnimatedValue(1);
 
   useEffect(() => {
-    Animated.loop(
-      Animated.parallel([
-        //runs multiple animations in parallel
-        Animated.sequence([
-          //runs animations in order, one after the other.
-          Animated.timing(progress, {
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-          Animated.timing(progress, {
-            toValue: 0.5,
-            useNativeDriver: true,
-          }),
-        ]),
-
-        Animated.sequence([
-          Animated.timing(scale, {
-            toValue: 2,
-            useNativeDriver: true,
-          }),
-          Animated.timing(scale, {
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]),
-      { iterations: 3 }
-    ).start();
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 10000,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(scale, {
+      toValue: 2,
+      duration: 10000,
+      useNativeDriver: true,
+    }).start();
   }, []);
 
   return (
@@ -48,7 +30,7 @@ const FadeInView = () => {
         styles.squareBox,
         {
           borderRadius: progress.interpolate({
-            inputRange: [0.5, 1],
+            inputRange: [0, 1],
             outputRange: [size / 4, size / 2],
           }),
           opacity: progress,
@@ -56,7 +38,7 @@ const FadeInView = () => {
             { scale },
             {
               rotate: progress.interpolate({
-                inputRange: [0.5, 1],
+                inputRange: [0, 1],
                 outputRange: ["180deg", "360deg"],
               }),
             },
