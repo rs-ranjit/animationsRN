@@ -1,79 +1,57 @@
-import {
-  View,
-  Text,
-  Animated,
-  StyleSheet,
-  useAnimatedValue,
-} from "react-native";
 import React, { useEffect } from "react";
+import { View, Animated, StyleSheet, Easing } from "react-native";
 
-const FadeInView = () => {
-  const progress = useAnimatedValue(0);
-  const scale = useAnimatedValue(1);
+const TranslateExample = () => {
+  const translateX = new Animated.Value(0); // Animated value for the X-axis
+  const translateY = new Animated.Value(0); // Animated value for the Y-axis
 
   useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 10000,
-      useNativeDriver: true,
+    // Start the translation animation
+    Animated.timing(translateX, {
+      toValue: 200, // Translate along X-axis by 200 units
+      duration: 1000, // Duration of 1 second
+      easing: Easing.ease, // Ease in-out animation
+      useNativeDriver: true, // Use native driver for performance
     }).start();
-    Animated.timing(scale, {
-      toValue: 2,
-      duration: 10000,
-      useNativeDriver: true,
+
+    Animated.timing(translateY, {
+      toValue: 300, // Translate along Y-axis by 300 units
+      duration: 1000, // Duration of 1 second
+      easing: Easing.ease, // Ease in-out animation
+      useNativeDriver: true, // Use native driver for performance
     }).start();
   }, []);
 
   return (
-    <Animated.View
-      style={[
-        styles.squareBox,
-        {
-          borderRadius: progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [size / 4, size / 2],
-          }),
-          opacity: progress,
-          transform: [
-            { scale },
-            {
-              rotate: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: ["180deg", "360deg"],
-              }),
-            },
-          ],
-        },
-      ]}
-    ></Animated.View>
-  );
-};
-
-const App = () => {
-  return (
     <View style={styles.container}>
-      <FadeInView />
-      <View style={[styles.squareBox, { marginTop: 100 }]}>
-        <Text>helo</Text>
-      </View>
+      <Animated.View
+        style={[
+          styles.circle,
+          {
+            transform: [
+              { translateX }, // Apply X translation
+              { translateY }, // Apply Y translation
+            ],
+          },
+        ]}
+      />
     </View>
   );
 };
 
-const size = 100;
-
-export default App;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
   },
-  squareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "rgba(0,0,256,0.5)",
+  circle: {
+    width: 100,
+    height: 100,
+    backgroundColor: "blue",
+    borderRadius: 50, // Circle shape
   },
 });
+
+export default TranslateExample;

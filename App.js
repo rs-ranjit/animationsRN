@@ -4,6 +4,7 @@ import {
   Animated,
   StyleSheet,
   useAnimatedValue,
+  Easing,
 } from "react-native";
 import React, { useEffect } from "react";
 
@@ -13,16 +14,19 @@ const FadeInView = () => {
 
   useEffect(() => {
     Animated.loop(
+      //loops the content inside
       Animated.parallel([
         //runs multiple animations in parallel
         Animated.sequence([
           //runs animations in order, one after the other.
           Animated.timing(progress, {
             toValue: 1,
+            easing: Easing.bounce,
             useNativeDriver: true,
           }),
           Animated.timing(progress, {
             toValue: 0.5,
+            easing: Easing.bounce,
             useNativeDriver: true,
           }),
         ]),
@@ -31,39 +35,170 @@ const FadeInView = () => {
           Animated.timing(scale, {
             toValue: 2,
             useNativeDriver: true,
+            easing: Easing.bounce,
           }),
           Animated.timing(scale, {
             toValue: 1,
+            easing: Easing.bounce,
             useNativeDriver: true,
           }),
         ]),
-      ]),
-      { iterations: 3 }
+      ])
+      // ,{ iterations: 3 }
     ).start();
   }, []);
 
   return (
-    <Animated.View
-      style={[
-        styles.squareBox,
-        {
-          borderRadius: progress.interpolate({
-            inputRange: [0.5, 1],
-            outputRange: [size / 4, size / 2],
-          }),
-          opacity: progress,
-          transform: [
-            { scale },
-            {
-              rotate: progress.interpolate({
-                inputRange: [0.5, 1],
-                outputRange: ["180deg", "360deg"],
-              }),
-            },
-          ],
-        },
-      ]}
-    ></Animated.View>
+    <View>
+      <Animated.View
+        style={[
+          styles.redsquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.pinksquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.greensquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.bluesquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.yellowsquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+
+      <Animated.View
+        style={[
+          styles.greensquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+      <Animated.View
+        style={[
+          styles.pinksquareBox,
+          {
+            borderRadius: progress.interpolate({
+              inputRange: [0.5, 1],
+              outputRange: [size / 4, size / 2],
+            }),
+            opacity: progress,
+            transform: [
+              { scale },
+              {
+                rotate: progress.interpolate({
+                  inputRange: [0.5, 1],
+                  outputRange: ["180deg", "360deg"],
+                }),
+              },
+            ],
+          },
+        ]}
+      ></Animated.View>
+    </View>
   );
 };
 
@@ -71,9 +206,6 @@ const App = () => {
   return (
     <View style={styles.container}>
       <FadeInView />
-      <View style={[styles.squareBox, { marginTop: 100 }]}>
-        <Text>helo</Text>
-      </View>
     </View>
   );
 };
@@ -89,9 +221,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  squareBox: {
+  bluesquareBox: {
     width: size,
     height: size,
     backgroundColor: "rgba(0,0,256,0.5)",
+    borderRadius: 50,
+  },
+  yellowsquareBox: {
+    width: size,
+    height: size,
+    backgroundColor: "yellow",
+    borderRadius: 50,
+  },
+
+  greensquareBox: {
+    width: size,
+    height: size,
+    backgroundColor: "green",
+    borderRadius: 50,
+  },
+  pinksquareBox: {
+    width: size,
+    height: size,
+    backgroundColor: "pink",
+    borderRadius: 50,
+  },
+  redsquareBox: {
+    width: size,
+    height: size,
+    backgroundColor: "red",
+    borderRadius: 50,
   },
 });
