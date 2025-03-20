@@ -1,255 +1,129 @@
+import React from "react";
 import {
-  View,
+  ScrollView,
   Text,
-  Animated,
   StyleSheet,
+  View,
+  ImageBackground,
+  Animated,
+  useWindowDimensions,
   useAnimatedValue,
-  Easing,
 } from "react-native";
-import React, { useEffect } from "react";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
-const FadeInView = () => {
-  const progress = useAnimatedValue(0.5);
-  const scale = useAnimatedValue(1);
-
-  useEffect(() => {
-    Animated.loop(
-      //loops the content inside
-      Animated.parallel([
-        //runs multiple animations in parallel
-        Animated.sequence([
-          //runs animations in order, one after the other.
-          Animated.timing(progress, {
-            toValue: 1,
-            easing: Easing.bounce,
-            useNativeDriver: true,
-          }),
-          Animated.timing(progress, {
-            toValue: 0.5,
-            easing: Easing.bounce,
-            useNativeDriver: true,
-          }),
-        ]),
-
-        Animated.sequence([
-          Animated.timing(scale, {
-            toValue: 2,
-            useNativeDriver: true,
-            easing: Easing.bounce,
-          }),
-          Animated.timing(scale, {
-            toValue: 1,
-            easing: Easing.bounce,
-            useNativeDriver: true,
-          }),
-        ]),
-      ])
-      // ,{ iterations: 3 }
-    ).start();
-  }, []);
-
-  return (
-    <View>
-      <Animated.View
-        style={[
-          styles.redsquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-      <Animated.View
-        style={[
-          styles.pinksquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-      <Animated.View
-        style={[
-          styles.greensquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-      <Animated.View
-        style={[
-          styles.bluesquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-      <Animated.View
-        style={[
-          styles.yellowsquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-
-      <Animated.View
-        style={[
-          styles.greensquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-      <Animated.View
-        style={[
-          styles.pinksquareBox,
-          {
-            borderRadius: progress.interpolate({
-              inputRange: [0.5, 1],
-              outputRange: [size / 4, size / 2],
-            }),
-            opacity: progress,
-            transform: [
-              { scale },
-              {
-                rotate: progress.interpolate({
-                  inputRange: [0.5, 1],
-                  outputRange: ["180deg", "360deg"],
-                }),
-              },
-            ],
-          },
-        ]}
-      ></Animated.View>
-    </View>
-  );
-};
+const images = new Array(6).fill(
+  "https://images.unsplash.com/photo-1556740749-887f6717d7e4"
+);
 
 const App = () => {
+  const scrollX = useAnimatedValue(0);
+
+  const { width: windowWidth } = useWindowDimensions();
+
   return (
-    <View style={styles.container}>
-      <FadeInView />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.scrollContainer}>
+          <ScrollView
+            horizontal={true}
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={Animated.event([
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: scrollX,
+                  },
+                },
+              },
+            ])}
+            scrollEventThrottle={1}
+          >
+            {images.map((image, imageIndex) => {
+              return (
+                <View
+                  style={{ width: windowWidth, height: 250 }}
+                  key={imageIndex}
+                >
+                  <ImageBackground source={{ uri: image }} style={styles.card}>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.infoText}>
+                        {"Image - " + imageIndex}
+                      </Text>
+                    </View>
+                  </ImageBackground>
+                </View>
+              );
+            })}
+          </ScrollView>
+          <View style={styles.indicatorContainer}>
+            {images.map((image, imageIndex) => {
+              const width = scrollX.interpolate({
+                inputRange: [
+                  windowWidth * (imageIndex - 1),
+                  windowWidth * imageIndex,
+                  windowWidth * (imageIndex + 1),
+                ],
+                outputRange: [8, 16, 8],
+                extrapolate: "clamp",
+              });
+              return (
+                <Animated.View
+                  key={imageIndex}
+                  style={[styles.normalDot, { width }]}
+                />
+              );
+            })}
+          </View>
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
-
-const size = 100;
-
-export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
-  bluesquareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "rgba(0,0,256,0.5)",
-    borderRadius: 50,
+  scrollContainer: {
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  yellowsquareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "yellow",
-    borderRadius: 50,
+  card: {
+    flex: 1,
+    marginVertical: 4,
+    marginHorizontal: 16,
+    borderRadius: 5,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
   },
-
-  greensquareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "green",
-    borderRadius: 50,
+  textContainer: {
+    backgroundColor: "rgba(0,0,0, 0.7)",
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 5,
   },
-  pinksquareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "pink",
-    borderRadius: 50,
+  infoText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  redsquareBox: {
-    width: size,
-    height: size,
-    backgroundColor: "red",
-    borderRadius: 50,
+  normalDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: "silver",
+    marginHorizontal: 4,
+  },
+  indicatorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
+
+export default App;
